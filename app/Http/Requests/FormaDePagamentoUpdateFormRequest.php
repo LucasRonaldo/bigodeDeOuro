@@ -24,7 +24,7 @@ class FormaDePagamentoUpdateFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tipos_de_pagamento' => 'required',
+            'tipos_de_pagamento' => 'required|unique:forma_de_pagamentos,tipos_de_pagamento',
             'status_do_pagamento'=> 'required',
             'taxa'=>'decimal:2,4'
         ];
@@ -36,5 +36,15 @@ class FormaDePagamentoUpdateFormRequest extends FormRequest
             'success' => false,
             'error' => $validator->errors()
         ]));
+    }
+
+    
+     public function messages()
+    {
+        return  [
+            'tipos_de_pagamento.required' => 'Este campo é obrigatorio',
+            'tipos_de_pagamento.unique' => 'Metodo de Pagamento já existente',
+            'taxa.decimal' => 'Campo só aceita numeros decimais',
+        ];
     }
 }

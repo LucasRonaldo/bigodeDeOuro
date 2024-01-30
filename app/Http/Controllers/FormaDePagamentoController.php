@@ -41,24 +41,25 @@ class FormaDePagamentoController extends Controller
 
     public function retornarFormasDePagamento()
     {
-        $pagamento = FormaDePagamento::all();
+        $pagamentos = FormaDePagamento::where('status_do_pagamento', 'habilitado')->get();
 
-        if (count($pagamento) > 0) {
+        if ($pagamentos->count() > 0) {
             return response()->json([
                 'status' => true,
-                'data' => $pagamento
+                'data' => $pagamentos
             ]);
         }
+
         return response()->json([
             'status' => false,
-            'data' => 'Não há nenhuma forma de pagamento registrada'
+            'data' => 'Não há nenhuma forma de pagamento habilitada registrada'
         ]);
     }
 
     public function excluirFormaDePagamento($id)
     {
         $pagamento = FormaDePagamento::find($id);
-        
+
 
         if (!isset($pagamento)) {
             return response()->json([
@@ -95,8 +96,8 @@ class FormaDePagamentoController extends Controller
         if (isset($request->taxa)) {
             $pagamento->taxa = $request->taxa;
         }
-       
-      
+
+
 
 
 
@@ -114,10 +115,10 @@ class FormaDePagamentoController extends Controller
         $pagamento = FormaDePagamento::all();
 
         if (count($pagamento) > 0) {
-            
+
             return response()->json([
                 'status' => true,
-                'data' => $pagamento->tipos_de_pagamento.": ".$pagamento->taxa
+                'data' => $pagamento->tipos_de_pagamento . ": " . $pagamento->taxa
             ]);
         }
         return response()->json([
@@ -125,6 +126,4 @@ class FormaDePagamentoController extends Controller
             'data' => 'Não há nenhuma forma de pagamento registrada'
         ]);
     }
-
-   
 }

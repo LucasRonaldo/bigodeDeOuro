@@ -24,6 +24,11 @@ Route::post('admin/cadastrar/pagamento', [FormaDePagamentoController::class, 'ca
 
 Route::put ('admin/recuperar/senha/profissional', [ProfissionalController::class, 'recuperarSenha']);
 
+Route::put ('admin/recuperar/senha/cliente', [ClienteController::class, 'recuperarSenha']);
+
+Route::put ('admin/recuperar/senha/admin', [AdministradorController::class, 'recuperarSenha']);
+
+
 Route::get('admin/all/cliente', [ClienteController::class, 'retornarTodosClientes']);
 
 Route::get('admin/all/profissional', [ProfissionalController::class, 'retornarTodosProfissionais']);
@@ -247,6 +252,8 @@ Route::put ('recuperar/senha/cliente', [ClienteController::class, 'recuperarSenh
 Route::put ('recuperar/senha/profissional', [ProfissionalController::class, 'recuperarSenha']);
 
 Route::put ('recuperar/senha/admin', [AdministradorController::class, 'recuperarSenha']);
+
+
 
 //------------------------------------------------------------------------------------------------------------
 

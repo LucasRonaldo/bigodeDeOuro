@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AdministradorFormRequest;
+use App\Http\Requests\AdministradorUpdateFormRequest;
 use App\Models\Administrador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -75,7 +76,7 @@ class AdministradorController extends Controller
         ]);
     }
 
-    public function editarAdm(Request $request)
+    public function editarAdm(AdministradorUpdateFormRequest $request)
     {
         $adm = Administrador::find($request->id);
 
