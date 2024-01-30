@@ -23,13 +23,13 @@ class AdministradorController extends Controller
 
         ]);
 
-        if(isset($adm)){
+        if (isset($adm)) {
 
             return response()->json([
                 'status' => true,
                 'message' => 'Administrador Cadastrado com sucesso',
                 'data' => $adm
-    
+
             ], 200);
         }
 
@@ -39,8 +39,6 @@ class AdministradorController extends Controller
             'data' => $adm
 
         ], 200);
-
-        
     }
 
     public function retornarTodosAdm()
@@ -58,7 +56,7 @@ class AdministradorController extends Controller
             'data' => 'Não há nenhum administrador registrado'
         ]);
     }
-    
+
     public function excluirAdm($id)
     {
         $adm = Administrador::find($id);
@@ -77,9 +75,10 @@ class AdministradorController extends Controller
         ]);
     }
 
-    public function editarAdministrador(Request $request)
+    public function editarAdm(Request $request)
     {
         $adm = Administrador::find($request->id);
+
         if (!isset($adm)) {
             return response()->json([
                 'status' => false,
@@ -91,7 +90,7 @@ class AdministradorController extends Controller
             $adm->nome = $request->nome;
         }
 
-       
+
         if (isset($request->email)) {
             $adm->email = $request->email;
         }
@@ -121,14 +120,31 @@ class AdministradorController extends Controller
 
             ]);
         }
-        if (isset($adm->cpf)) {
-            $adm->password = Hash::make( $adm->cpf );
+
+        $adm = Administrador::where('cpf', '=', $request->cpf)->first();
+
+        if (!isset($adm)) {
+            return response()->json([
+                'status' => false,
+                'message' => "cpf nao encontrado"
+
+            ]);
+        }
+        if (!isset($request->password)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Escreva a nova senha"
+
+            ]);
+        }
+        if (isset($request->password)) {
+            $adm->password = $request->password; //Hash::make( $request->password );
         }
         $adm->update();
 
         return response()->json([
             'status' => true,
-            'password' => $adm->password
+            'password' => Hash::make($adm->password)
         ]);
     }
 }

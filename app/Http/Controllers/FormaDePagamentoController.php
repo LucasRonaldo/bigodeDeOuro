@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormaDePagamentoFormRequest;
+use App\Http\Requests\FormaDePagamentoUpdateFormRequest;
 use App\Models\FormaDePagamento;
 use Illuminate\Http\Request;
 
@@ -50,16 +51,16 @@ class FormaDePagamentoController extends Controller
         }
         return response()->json([
             'status' => false,
-            'data' => 'Não há nenhuma forma de pagamento registradaS'
+            'data' => 'Não há nenhuma forma de pagamento registrada'
         ]);
     }
 
     public function excluirFormaDePagamento($id)
     {
         $pagamento = FormaDePagamento::find($id);
-        $tipoDePagamento = $pagamento->tipos_de_pagamento;
+        
 
-        if (!isset($pagamento) || $pagamento == 0) {
+        if (!isset($pagamento)) {
             return response()->json([
                 'status' => false,
                 'message' => "Nenhum tipo de pagamento encontrado"
@@ -69,7 +70,61 @@ class FormaDePagamentoController extends Controller
         $pagamento->delete();
         return response()->json([
             'status' => true,
-            'message' => "Tipo de Pagamento: " . $tipoDePagamento . "\n excluido com sucesso"
+            'message' => "Tipo de pagamento excluido com sucesso"
         ]);
     }
+
+
+    public function editarFormaDePagamento(FormaDePagamentoUpdateFormRequest $request)
+    {
+        $pagamento = FormaDePagamento::find($request->id);
+        if (!isset($pagamento)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Forma de Pagamento não encontrado"
+            ]);
+        }
+
+        if (isset($request->tipos_de_pagamento)) {
+            $pagamento->tipos_de_pagamento = $request->tipos_de_pagamento;
+        }
+
+        if (isset($request->status_do_pagamento)) {
+            $pagamento->status_do_pagamento = $request->status_do_pagamento;
+        }
+        if (isset($request->taxa)) {
+            $pagamento->taxa = $request->taxa;
+        }
+       
+      
+
+
+
+
+        $pagamento->update();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Cliente atualizado.'
+        ]);
+    }
+
+    public function retornarTaxas()
+    {
+        $pagamento = FormaDePagamento::all();
+
+        if (count($pagamento) > 0) {
+            
+            return response()->json([
+                'status' => true,
+                'data' => $pagamento->tipos_de_pagamento.": ".$pagamento->taxa
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'data' => 'Não há nenhuma forma de pagamento registrada'
+        ]);
+    }
+
+   
 }

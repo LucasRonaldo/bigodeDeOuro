@@ -264,18 +264,32 @@ class ClienteController extends Controller
             ]);
         }
 
-        if (isset($cliente->cpf)) {
-           
-            $cliente->password = Hash::make( $cliente->cpf );
-            
+        $cliente = Cliente::where('cpf', '=', $request->cpf)->first();
+
+        if (!isset($cliente)) {
+            return response()->json([
+                'status' => false,
+                'message' => "cpf nao encontrado"
+
+            ]);
+        }
+        if (!isset($request->password)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Escreva a nova senha"
+
+            ]);
+        }
+        if (isset($request->password)) {
+            $cliente->password = $request->password; //Hash::make( $request->password );
         }
         $cliente->update();
 
         return response()->json([
             'status' => true,
-            'password' => $cliente->password
+            'password' => Hash::make($cliente->password)
         ]);
-    }
+    } 
 
 
 

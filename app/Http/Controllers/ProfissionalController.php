@@ -45,8 +45,6 @@ class ProfissionalController extends Controller
 
             ], 200);
         }
-
-       
     }
 
 
@@ -77,21 +75,21 @@ class ProfissionalController extends Controller
                 'message' => "Profissional não encontrado"
             ]);
         }
-        
+
         $agenda = Agenda::where('profissional_id', $id)->first();
-        
+
         if ($agenda) {
             return response()->json([
                 'status' => false,
                 'message' => "Não é possível excluir o profissional, pois há uma agenda associada a ele"
             ]);
         }
-    
+
         $profissional->delete();
         return response()->json([
             'status' => true,
             'message' => "Profissional excluído com sucesso"
-        ]); 
+        ]);
     }
 
 
@@ -163,7 +161,7 @@ class ProfissionalController extends Controller
         ]);
     }
 
-//Pesquisas
+    //Pesquisas
     public function pesquisarPorId($id)
     {
         $profissional = Profissional::find($id);
@@ -263,7 +261,7 @@ class ProfissionalController extends Controller
     public function recuperarSenha(Request $request)
     {
 
-        $profissional = Profissional::where('email', '=', $request->email)->first();
+       $profissional = Profissional::where('email', '=', $request->email)->first();
 
         if (!isset($profissional)) {
             return response()->json([
@@ -272,16 +270,33 @@ class ProfissionalController extends Controller
 
             ]);
         }
-        if (isset($profissional->cpf)) {
-            $profissional->password = Hash::make( $profissional->cpf );
+
+       $profissional = Profissional::where('cpf', '=', $request->cpf)->first();
+
+        if (!isset($profissional)) {
+            return response()->json([
+                'status' => false,
+                'message' => "cpf nao encontrado"
+
+            ]);
         }
-        $profissional->update();
+        if (!isset($request->password)) {
+            return response()->json([
+                'status' => false,
+                'message' => "Escreva a nova senha"
+
+            ]);
+        }
+        if (isset($request->password)) {
+           $profissional->password = $request->password; //Hash::make( $request->password );
+        }
+       $profissional->update();
 
         return response()->json([
             'status' => true,
-            'password' => $profissional->password
+            'password' => Hash::make($profissional->password)
         ]);
-    }
+    } 
 }
 
 //Pronto

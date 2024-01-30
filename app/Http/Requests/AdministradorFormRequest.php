@@ -26,7 +26,7 @@ class AdministradorFormRequest extends FormRequest
         return [
             'nome' => 'required|max:120|min:5',
             'email'  => 'required|max:120|email|unique:administradors,email,' . $this->id,
-            'cpf' => 'required|numeric|max:99999999999|min:10000000000|unique:administradors,cpf,' . $this->id,
+            'cpf' => 'required|max:11|min:11|unique:administradors,cpf,' . $this->id,
             'password' => 'required'
         ];
     }
@@ -43,10 +43,16 @@ class AdministradorFormRequest extends FormRequest
     {
         return  [
             'nome.required' => 'Este campo é obrigatorio',
+            'nome.max' => 'Este campo deve ter no maximo 120 caracteres',
+            'nome.min' => 'Este campo deve ter ni minimo 5 caracteres',
             'cpf.required' => 'Este campo é obrigatorio',
-            'email.required' => 'Este campo é obrigatorio',
-            'password.required' => 'Este campo é obrigatorio',
+            'cpf.max' => 'Este campo deve ter no maximo 11 caracteres',
+            'cpf.min' => 'Este campo deve ter no maximo 11 caracteres',
             'cpf.unique' => 'Cpf já cadastrado',
+            'email.required' => 'Este campo é obrigatorio',
+            'email.unique' => 'Email já cadastrado',
+            'password.required' => 'Este campo é obrigatorio',
+            
             'email.email' => 'email invalido',
             'password.required'
         ];
