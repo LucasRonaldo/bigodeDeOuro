@@ -55,7 +55,7 @@ class AgendaController extends Controller
             ->where('data_hora', $data_hora)
             ->first();
 
-        if ($agendaExistente) {
+         if ($agendaExistente) {
             return response()->json([
                 "status" => false,
                 "message" => "Já existe uma agenda cadastrada para essa data e profissional."
@@ -172,9 +172,10 @@ class AgendaController extends Controller
         ]);
     }
 
-    public function editarAgenda(Request $request)
+    public function editarAgenda(AgendaUpdateFormRequest $request)
     {
         $agenda = Agenda::find($request->id);
+        
         
 
         if (!isset($agenda)) {
@@ -195,6 +196,18 @@ class AgendaController extends Controller
             ], 400);
         }
 
+        $agendaExistente = Agenda::where('profissional_id', $agenda->profissional_id)
+            ->where('data_hora', $data_hora)
+            ->first();
+
+            
+
+         if ($agendaExistente) {
+            return response()->json([
+                "status" => false,
+                "message" => "Já existe uma agenda cadastrada para essa data e profissional."
+            ], 400);
+        }   
 
 
         /* $profissional = Profissional::find($request->profissional_id);
@@ -224,6 +237,8 @@ class AgendaController extends Controller
             ], 400);
         }*/
 
+        
+
         if (isset($request->profissional_id)) {
             $agenda->profissional_id = $request->profissional_id;
         }
@@ -241,6 +256,8 @@ class AgendaController extends Controller
             $agenda->valor = $request->valor;
         }
 
+        
+
         $agenda->update();
 
         return response()->json([
@@ -256,7 +273,7 @@ class AgendaController extends Controller
         if (!isset($agenda)) {
             return response()->json([
                 'status' => false,
-                'message' => "Agenda não cadastrado"
+                'message' => "Agenda não cadastrada"
             ]);
         }
         return response()->json([
