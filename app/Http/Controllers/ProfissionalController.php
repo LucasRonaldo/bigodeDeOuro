@@ -36,6 +36,7 @@ class ProfissionalController extends Controller
 
 
         ]);
+        
         if (isset($profissional)) {
             return response()->json([
                 "status" => true,

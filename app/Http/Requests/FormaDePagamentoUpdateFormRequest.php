@@ -24,7 +24,7 @@ class FormaDePagamentoUpdateFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tipos_de_pagamento' => 'required|unique:forma_de_pagamentos,tipos_de_pagamento',
+            'tipos_de_pagamento' => 'required|unique:forma_de_pagamentos',
             'status_do_pagamento'=> 'required',
             'taxa'=>'decimal:2,4'
         ];

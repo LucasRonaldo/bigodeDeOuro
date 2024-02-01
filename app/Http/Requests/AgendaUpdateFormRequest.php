@@ -27,7 +27,7 @@ class AgendaUpdateFormRequest extends FormRequest
         return [
            
 
-            'data_hora' => 'date'
+            'data_hora' => 'required|date'
         ];
     }
 
