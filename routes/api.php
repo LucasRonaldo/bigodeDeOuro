@@ -6,6 +6,9 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FormaDePagamentoController;
 use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\ServicoController;
+use App\Http\Middleware\IsAuthenticated;
+use App\Http\Middleware\SetSanctumGuard;
+use App\Http\Middleware\VerifyAdminGuard;
 use Illuminate\Support\Facades\Route;
 
 //ADMIN
@@ -262,4 +265,18 @@ Route::put ('recuperar/senha/admin', [AdministradorController::class, 'recuperar
 
 //login
 
-Route::post('/login', [ClienteController::class, 'login']);
+
+
+
+
+
+
+Route::post('/create', [AdministradorController::class, 'store']);
+
+Route::post('/login', [AdministradorController::class, 'login']);
+
+Route::get('admin/teste',[AdministradorController::class,'verificaUsuarioLogado'])
+->middleware(['auth:sanctum',
+SetSanctumGuard::class,
+VerifyAdminGuard::class,
+IsAuthenticated::class]);
